@@ -9,6 +9,7 @@ import {
   persistValue,
   removePersistedValue,
 } from "../../clientPersistence";
+import "./global";
 
 export const App = () => {
   const [isLoggedIn, setLogin] = useState(false);

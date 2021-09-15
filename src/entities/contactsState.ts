@@ -1,13 +1,14 @@
 import { makeAutoObservable } from "mobx";
-import { getContacts } from "../api";
+import { createContact, getContacts } from "../api";
 
 export type Contact = {
+  id: string;
   created: string;
-  ip: string;
   name: string;
-  port: number;
-  socket: string;
+  host: string;
 };
+
+export type NewContact = Omit<Contact, "created">;
 
 export class ContactsState {
   public contacts = new Map<string, Contact>();
@@ -36,10 +37,25 @@ export class ContactsState {
     const contacts = await getContacts(apiData.jwt, apiData.host);
 
     contacts.forEach((contact) => {
-      this.contacts.set(contact.socket, contact);
+      this.contacts.set(contact.host, contact);
     });
 
     return this.contacts;
+  };
+
+  public addContact = async (contact: NewContact) => {
+    const apiData = this.getApiData();
+    if (!apiData) {
+      return;
+    }
+
+    await createContact({
+      contact,
+      jwt: apiData.jwt,
+      host: apiData.host,
+    });
+
+    this.fetchContacts();
   };
 
   private getApiData = (): { jwt: string; host: string } | undefined => {

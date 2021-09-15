@@ -43,12 +43,12 @@ export type ChatProps = {
 };
 
 export const Chat = observer(({ messageState, chatWith }: ChatProps) => {
-  const messages = messageState.chats.get(chatWith.socket) ?? [];
+  const messages = messageState.chats.get(chatWith.host) ?? [];
 
   return (
     <ChatUi
       onMessageSend={(text) => {
-        messageState.sendMessage({ text }, chatWith.socket);
+        messageState.sendMessage({ text }, chatWith.host);
       }}
       chatWith={chatWith}
       messages={messages}

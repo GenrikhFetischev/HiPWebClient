@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { makeAutoObservable } from "mobx";
-import { openSocket } from "../api";
+import { fetchMessages, openSocket } from "../api";
 
 export enum EventTypes {
   ReceiveConfirmation,
@@ -161,6 +161,23 @@ export class MessageState {
       message.status = status;
       return;
     }
+  };
+
+  private getMessages = async (chatId: string) => {
+    const apiData = this.getApiData();
+    if (!apiData) {
+      return;
+    }
+
+    const messages = await fetchMessages({
+      jwt: apiData.jwt,
+      host: apiData.host,
+      chatId: chatId,
+    });
+
+    const chat = this.getChat(chatId);
+    chat.concat(messages)
+
   };
 
   private getChat = (chatId: string): Message[] => {

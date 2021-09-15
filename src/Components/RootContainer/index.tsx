@@ -7,9 +7,12 @@ import { Contacts } from "../Contacts";
 import { Chat } from "../Chat";
 import { Contact, contactsState } from "../../entities/contactsState";
 import { messageState } from "../../entities/messageState";
+import { chatZone, rootContainer } from "./styles";
+import { Header } from "../Header";
 
 export const RootContainer = () => {
   const [chatWith, openChatWith] = useState<Contact>();
+
   const onContactClick = useCallback(
     (contact: Contact) => {
       openChatWith(contact);
@@ -18,9 +21,9 @@ export const RootContainer = () => {
   );
 
   return (
-    <div>
-      <h1>HiP</h1>
-      <div style={{ position: "relative", height: "500px" }}>
+    <div className={rootContainer}>
+      <Header contactsState={contactsState} />
+      <div className={chatZone}>
         <MainContainer>
           <Contacts
             onContactClick={onContactClick}
@@ -32,6 +35,7 @@ export const RootContainer = () => {
           )}
         </MainContainer>
       </div>
+
     </div>
   );
 };

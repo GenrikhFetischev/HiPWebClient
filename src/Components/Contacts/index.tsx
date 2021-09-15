@@ -30,7 +30,7 @@ export const ContactsUi = ({
           <Conversation
             name={contact.name}
             key={contact.name}
-            active={contact.socket === activeChat?.socket}
+            active={contact.host === activeChat?.host}
             onClick={() => {
               console.log("clicked");
               onContactClick(contact);

@@ -21,8 +21,13 @@ export const LoginForm = (props: LoginFormProps) => {
       return;
     } else {
       setLoading(true);
-      const jwt = await authenticate(pass, host);
-      props.onLogin(jwt, host);
+      try {
+        const jwt = await authenticate(pass, host);
+        props.onLogin(jwt, host);
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+      }
     }
   }, [pass, host, props.onLogin]);
 

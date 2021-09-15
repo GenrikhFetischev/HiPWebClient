@@ -55,7 +55,7 @@ export class ContactsState {
       host: apiData.host,
     });
 
-    this.fetchContacts();
+    await this.fetchContacts();
   };
 
   private getApiData = (): { jwt: string; host: string } | undefined => {

@@ -22,7 +22,10 @@ export const Header = ({ contactsState }: Props) => {
 
       {addContactShown && (
         <div className={addContactFormContainer}>
-          <AddContactForm contactsState={contactsState} />
+          <AddContactForm
+            contactsState={contactsState}
+            onClose={() => toggleAddContactMenu(false)}
+          />
         </div>
       )}
     </header>

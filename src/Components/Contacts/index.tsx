@@ -3,12 +3,11 @@ import { observer } from "mobx-react-lite";
 
 import {
   Sidebar,
-  Conversation,
-  Avatar,
   // @ts-ignore
 } from "@chatscope/chat-ui-kit-react";
 import { Contact, ContactsState } from "../../entities/contactsState";
-import { avatarStub, conversation, sidebar } from "./styles";
+import { sidebar } from "./styles";
+import { ContactWidget } from "../Contact";
 
 export type ContactsUiProps = {
   onContactClick: (contact: Contact) => void;
@@ -25,21 +24,11 @@ export const ContactsUi = ({
     <div>
       <Sidebar position="left" scrollable className={sidebar}>
         {contacts.map((contact) => (
-          <Conversation
-            className={conversation}
-            name={contact.name}
-            key={contact.name}
-            active={contact.host === activeChat?.host}
-            onClick={() => {
-              console.log("clicked");
-              onContactClick(contact);
-            }}
-          >
-            <Avatar
-              children={<div className={avatarStub}>{contact.name}</div>}
-              name={contact.name}
-            />
-          </Conversation>
+          <ContactWidget
+            contact={contact}
+            isActive={contact.host === activeChat?.host}
+            onClick={onContactClick}
+          />
         ))}
       </Sidebar>
     </div>

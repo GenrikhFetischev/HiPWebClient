@@ -10,21 +10,26 @@ const checkInput = (input: Partial<NewContact>): input is NewContact => {
 };
 
 type AddContactFormUiProps = {
-  onSubmit: (contact: NewContact) => void;
+  onSubmit: (contact: NewContact) => Promise<void>;
+  onClose: () => void;
 };
 
-export const AddContactFormUi = ({ onSubmit }: AddContactFormUiProps) => {
+export const AddContactFormUi = ({
+  onSubmit,
+  onClose,
+}: AddContactFormUiProps) => {
   const [state, setState] = useState<Partial<NewContact>>({});
 
   const onFormSubmit = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
+    async (e: FormEvent<HTMLFormElement | HTMLButtonElement>) => {
       e.preventDefault();
       const isFormFulfilled = checkInput(state);
       if (isFormFulfilled) {
-        onSubmit(state);
+        await onSubmit(state);
+        onClose();
       }
     },
-    [state]
+    [state, setState]
   );
 
   const onNameChange = useCallback(
@@ -71,13 +76,23 @@ export const AddContactFormUi = ({ onSubmit }: AddContactFormUiProps) => {
         />
       </form>
 
-      <button className={button}>Add contact</button>
+      <button className={button} onClick={onFormSubmit}>
+        Add contact
+      </button>
     </>
   );
 };
 
 export const AddContactForm = observer(
-  ({ contactsState }: { contactsState: ContactsState }) => {
-    return <AddContactFormUi onSubmit={contactsState.addContact} />;
+  ({
+    contactsState,
+    onClose,
+  }: {
+    contactsState: ContactsState;
+    onClose: () => void;
+  }) => {
+    return (
+      <AddContactFormUi onSubmit={contactsState.addContact} onClose={onClose} />
+    );
   }
 );

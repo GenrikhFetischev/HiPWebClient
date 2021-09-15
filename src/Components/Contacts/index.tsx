@@ -8,6 +8,7 @@ import {
   // @ts-ignore
 } from "@chatscope/chat-ui-kit-react";
 import { Contact, ContactsState } from "../../entities/contactsState";
+import { avatarStub, conversation, sidebar } from "./styles";
 
 export type ContactsUiProps = {
   onContactClick: (contact: Contact) => void;
@@ -15,19 +16,17 @@ export type ContactsUiProps = {
   contacts: Contact[];
 };
 
-const avatarStub =
-  "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-10.jpg";
-
 export const ContactsUi = ({
   contacts,
   onContactClick,
   activeChat,
 }: ContactsUiProps) => {
   return (
-    <div style={{ position: "relative", height: "500px" }}>
-      <Sidebar position="left">
+    <div>
+      <Sidebar position="left" scrollable className={sidebar}>
         {contacts.map((contact) => (
           <Conversation
+            className={conversation}
             name={contact.name}
             key={contact.name}
             active={contact.host === activeChat?.host}
@@ -36,7 +35,10 @@ export const ContactsUi = ({
               onContactClick(contact);
             }}
           >
-            <Avatar src={avatarStub} name={contact.name} />
+            <Avatar
+              children={<div className={avatarStub}>{contact.name}</div>}
+              name={contact.name}
+            />
           </Conversation>
         ))}
       </Sidebar>

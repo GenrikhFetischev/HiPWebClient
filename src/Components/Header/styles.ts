@@ -17,7 +17,7 @@ export const addContactFormContainer = css`
   position: absolute;
   right: 10px;
   top: 100px;
-  z-index: 1;
+  z-index: 4;
   padding: 10px;
   border: 1px solid gray;
   display: flex;

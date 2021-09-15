@@ -9,6 +9,7 @@ import { Contact, contactsState } from "../../entities/contactsState";
 import { messageState } from "../../entities/messageState";
 import { chatZone, rootContainer } from "./styles";
 import { Header } from "../Header";
+import { Footer } from "../Footer";
 
 export const RootContainer = () => {
   const [chatWith, openChatWith] = useState<Contact>();
@@ -35,7 +36,7 @@ export const RootContainer = () => {
           )}
         </MainContainer>
       </div>
-
+      <Footer />
     </div>
   );
 };

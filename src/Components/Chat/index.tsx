@@ -32,7 +32,11 @@ export const ChatUi = ({ chatWith, onMessageSend, messages }: ChatUiProps) => {
           />
         ))}
       </MessageList>
-      <MessageInput placeholder="Type message here" onSend={onMessageSend} />
+      <MessageInput
+        placeholder="Type message here"
+        onSend={onMessageSend}
+        attachButton={false}
+      />
     </ChatContainer>
   );
 };

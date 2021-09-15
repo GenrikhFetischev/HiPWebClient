@@ -3,7 +3,8 @@ import React, { useCallback, useState } from "react";
 import { Loader } from "@chatscope/chat-ui-kit-react";
 import { authenticate } from "../../api";
 import { extractInputChange } from "../../uiHelpers";
-import { formContainer, submit } from "./styles";
+import { formContainer, header, root, submit } from "./styles";
+import { input } from "../AddContactForm/styles";
 
 export type LoginFormProps = {
   onLogin: (jwt: string, host: string) => void;
@@ -35,28 +36,36 @@ export const LoginForm = (props: LoginFormProps) => {
   const onPassChange = useCallback(extractInputChange(setPass), [setPass]);
 
   return (
-    <div className={formContainer}>
+    <div className={root}>
+      <h1 className={header}>HiP</h1>
       {isLoading ? (
         <Loader />
       ) : (
-        <>
+        <div className={formContainer}>
           <label htmlFor="Host">
-            <span>host</span>
+            <span>Your private host</span>
           </label>
           <input
+            className={input}
+            placeholder="e.g: 123.4.5.6:3001"
             type="text"
             id="host"
             onChange={onHostChange}
             defaultValue={defaultHost}
           />
           <label htmlFor="Password">
-            <span>password</span>
+            <span>Password</span>
           </label>
-          <input type="password" id="password" onChange={onPassChange} />
+          <input
+            className={input}
+            type="password"
+            id="password"
+            onChange={onPassChange}
+          />
           <button className={submit} onClick={onSubmit}>
             Login
           </button>
-        </>
+        </div>
       )}
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { FormEvent, useCallback, useState } from "react";
 // @ts-ignore
 import { Loader } from "@chatscope/chat-ui-kit-react";
 import { authenticate } from "../../api";
@@ -17,20 +17,24 @@ export const LoginForm = (props: LoginFormProps) => {
   const [host, setHost] = useState<string>(defaultHost);
   const [isLoading, setLoading] = useState<boolean>(false);
 
-  const onSubmit = useCallback(async () => {
-    if (!pass || !host) {
-      return;
-    } else {
-      setLoading(true);
-      try {
-        const jwt = await authenticate(pass, host);
-        props.onLogin(jwt, host);
-      } catch (e) {
-        console.error(e);
-        setLoading(false);
+  const onSubmit = useCallback(
+    async (e: FormEvent<HTMLFormElement | HTMLButtonElement>) => {
+      e.preventDefault();
+      if (!pass || !host) {
+        return;
+      } else {
+        setLoading(true);
+        try {
+          const jwt = await authenticate(pass, host);
+          props.onLogin(jwt, host);
+        } catch (e) {
+          console.error(e);
+          setLoading(false);
+        }
       }
-    }
-  }, [pass, host, props.onLogin]);
+    },
+    [pass, host, props.onLogin]
+  );
 
   const onHostChange = useCallback(extractInputChange(setHost), [setHost]);
   const onPassChange = useCallback(extractInputChange(setPass), [setPass]);
@@ -41,7 +45,7 @@ export const LoginForm = (props: LoginFormProps) => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className={formContainer}>
+        <form className={formContainer} onSubmit={onSubmit}>
           <label htmlFor="Host">
             <span>Your private host</span>
           </label>
@@ -65,7 +69,7 @@ export const LoginForm = (props: LoginFormProps) => {
           <button className={submit} onClick={onSubmit}>
             Login
           </button>
-        </div>
+        </form>
       )}
     </div>
   );

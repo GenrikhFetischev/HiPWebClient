@@ -63,7 +63,7 @@ export class MessageState {
   private socket?: WebSocket;
   private jwt?: string;
   private host?: string;
-  public chats = new Map<string, Message[]>();
+  public chats: { [key: string]: Message[] | undefined } = {};
 
   constructor() {
     makeAutoObservable(this);
@@ -163,7 +163,7 @@ export class MessageState {
     }
   };
 
-  private getMessages = async (chatId: string) => {
+  public fetchMessages = async (chatId: string) => {
     const apiData = this.getApiData();
     if (!apiData) {
       return;
@@ -176,18 +176,19 @@ export class MessageState {
     });
 
     const chat = this.getChat(chatId);
-    chat.concat(messages)
 
+    this.chats[chatId] = [...chat, ...messages];
   };
 
-  private getChat = (chatId: string): Message[] => {
-    const chat = this.chats.get(chatId);
+  public getChat = (chatId: string): Message[] => {
+    const chat = this.chats[chatId];
 
     if (!chat) {
-      this.chats.set(chatId, []);
+      this.chats[chatId] = [];
+      this.fetchMessages(chatId);
     }
 
-    return this.chats.get(chatId) as Message[];
+    return this.chats[chatId] as Message[];
   };
 
   private addMessage = (message: Message) => {
@@ -195,7 +196,7 @@ export class MessageState {
 
     const chat = this.getChat(chatId);
 
-    chat.push(message);
+    this.chats[chatId] = [...chat, message];
   };
 }
 

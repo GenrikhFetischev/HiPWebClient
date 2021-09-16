@@ -25,6 +25,7 @@ export const ContactsUi = ({
       <Sidebar position="left" scrollable className={sidebar}>
         {contacts.map((contact) => (
           <ContactWidget
+            key={contact.id}
             contact={contact}
             isActive={contact.host === activeChat?.host}
             onClick={onContactClick}
@@ -45,6 +46,12 @@ export const Contacts = observer(
   ({ contactsState, ...rest }: ContactsProps) => {
     const contacts = [...contactsState.contacts.values()];
 
-    return <ContactsUi {...rest} contacts={contacts} />;
+    return (
+      <ContactsUi
+        onContactClick={rest.onContactClick}
+        activeChat={rest.activeChat}
+        contacts={contacts}
+      />
+    );
   }
 );

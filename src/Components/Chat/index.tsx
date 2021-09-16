@@ -18,6 +18,8 @@ export type ChatUiProps = {
 };
 
 export const ChatUi = ({ chatWith, onMessageSend, messages }: ChatUiProps) => {
+  messages.forEach(console.log);
+
   return (
     <ChatContainer>
       <MessageList>
@@ -47,7 +49,7 @@ export type ChatProps = {
 };
 
 export const Chat = observer(({ messageState, chatWith }: ChatProps) => {
-  const messages = messageState.chats.get(chatWith.host) ?? [];
+  const messages = messageState.getChat(chatWith.host);
 
   return (
     <ChatUi
